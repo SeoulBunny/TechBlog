@@ -7,6 +7,7 @@ import Navbar from "@/_components/general/navbar/Navbar";
 import Footer from "@/_components/general/footer/page";
 import SignInModal from "@/_components/modals/SignInModal";
 import SearchModal from "@/_components/modals/SearchModal";
+import QueryProvider from "./providers/QueryProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -27,12 +28,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} antialiased bg-background`}>
-        <Navbar />
-        {children}
-        <Footer />
-        <SignInModal />
-        <SearchModal />
-        <Toaster />
+        <QueryProvider>
+          <Navbar />
+          {children}
+          <Footer />
+          <SignInModal />
+          <SearchModal />
+          <Toaster />
+        </QueryProvider>
       </body>
     </html>
   );

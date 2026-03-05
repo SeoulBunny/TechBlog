@@ -1,20 +1,43 @@
-import { getAllPosts } from "@/_lib/posts";
+"use client";
+
 import ContainerLayouts from "@/_layouts/ContainerLayouts";
+import { Post } from "@/types/posts";
 // import { Post } from "@/types/posts";
 import Image from "next/image";
 import Link from "next/link";
+import { useInfinitePosts } from "../custom-hooks/usePost";
+import PostCardSkelton from "@/_components/skeletons/PostCardSkelton";
 
-// const posts: Post[] = [];
+const ArticlesPage = () => {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+    useInfinitePosts({ limit: 1 });
 
-const ArticlesPage = async () => {
-  const posts = await getAllPosts();
+  if (status === "pending") {
+    return (
+      <ContainerLayouts>
+        <h2 className="text-xl sm:text-2xl md:text-3xl text-white font-semibold">
+          All Articles
+        </h2>
+
+        <PostCardSkelton />
+      </ContainerLayouts>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <ContainerLayouts>
+        <p className="text-gray-300">Failed to load articles.</p>
+      </ContainerLayouts>
+    );
+  }
+
+  const posts = data.pages.flatMap((page) => page.posts) ?? [];
 
   return (
     <ContainerLayouts>
       <div className="space-y-6">
-        <h2 className="text-xl sm:text-2xl md:text-3xl text-white font-semibold">
-          All Articles
-        </h2>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
             <div
@@ -31,6 +54,8 @@ const ArticlesPage = async () => {
                   />
                 </div>
               )}
+
+              {/* content */}
               <div className="p-5 space-y-3">
                 <time className="text-xs text-gray-400">
                   {new Date(post.createdAt).toLocaleDateString("en-GB", {
@@ -55,11 +80,17 @@ const ArticlesPage = async () => {
             </div>
           ))}
         </div>
-        <div className="flex justify-center mt-10">
-          <button className="px-8 py-3 rounded-full bg-secondary-background text-gray-300 text-sm font-medium border border-white/10 hover:border-white/20 hover:text-white transition-all duration-300 cursor-pointer">
-            Load more articles
-          </button>
-        </div>
+        {hasNextPage && (
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+              className="px-8 py-3 rounded-full bg-secondary-background text-gray-300 text-sm font-medium border border-white/10 hover:border-white/20 hover:text-white transition-all duration-300 cursor-pointer"
+            >
+              {isFetchingNextPage ? "Loading..." : "Load more articles"}
+            </button>
+          </div>
+        )}
       </div>
     </ContainerLayouts>
   );

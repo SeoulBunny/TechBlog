@@ -1,4 +1,5 @@
 import RecentPosts from "@/_components/home/RecentPosts";
+import PostCardSkelton from "@/_components/skeletons/PostCardSkelton";
 import ContainerLayouts from "@/_layouts/ContainerLayouts";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,9 +49,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Suspense
-        fallback={<p className="text-gray-500 font-bold">Loading...</p>}
-      >
+      <Suspense fallback={<PostCardSkelton />}>
         <RecentPosts />
       </Suspense>
     </ContainerLayouts>
