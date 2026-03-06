@@ -6,3 +6,9 @@
   --color-secondary-background: #121212;
   --color-hover: #181818;
 }
+
+.blog-post h2 {
+  color: white !important;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
