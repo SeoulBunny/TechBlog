@@ -74,9 +74,8 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const DEFAULT_LIMIT = 3;
     const cursor = searchParams.get("cursor");
-    const limit = Number(searchParams.get("limit")) || DEFAULT_LIMIT;
+    const limit = Number(searchParams.get("limit")) || 6;
     const posts = await prisma.post.findMany({
       take: limit + 1,
       orderBy: { createdAt: "desc" },
@@ -95,13 +94,15 @@ export async function GET(req: Request) {
     // determine pagination state
 
     const hasMore = posts.length > limit;
-    const items = hasMore ? posts.slice(0,limit) : posts;
-    const nextCursor = hasMore ? items[items.length - 1].id : null;
+
+    const items = hasMore ? posts.slice(0, limit) : posts;
+
+    const nextCursor = hasMore ? posts[limit].id : null;
 
     return NextResponse.json({
       posts: items,
       nextCursor,
-    })
+    });
   } catch (error) {
     console.error("Fetch posts error:", error);
     return NextResponse.json(

@@ -13,3 +13,8 @@ export async function fetchPosts({
   });
   return res.data;
 }
+
+export async function deletePost(postId: string) {
+  const res = await axios.delete(`/api/posts/${postId}`);
+  return res.data;
+}

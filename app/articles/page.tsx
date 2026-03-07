@@ -9,8 +9,8 @@ import PostCardSkelton from "@/_components/skeletons/PostCardSkelton";
 
 const ArticlesPage = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useInfinitePosts({ limit: 1 });
-
+    useInfinitePosts({ limit: 6 });
+  console.log("React Query pages:", data?.pages);
   if (status === "pending") {
     return (
       <ContainerLayouts>

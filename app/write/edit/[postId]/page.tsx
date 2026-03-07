@@ -8,7 +8,8 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import EditPageSkeleton from "@/_components/skeletons/EditPageSkeleton";
 
-export default function EditPage() {
+export default 
+function EditPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [excerpt, setExcerpt] = useState("");

@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
 import { authClient } from "@/_lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import { use } from "react";
-import { LuPen, LuTrash } from "react-icons/lu";
+import { LuPen } from "react-icons/lu";
+import DeleteButton from "./DeleteButton";
 
 interface BlogViewProps {
   postPromise: Promise<{
@@ -86,13 +87,7 @@ const BlogView = ({ postPromise }: BlogViewProps) => {
             Edit
           </Link>
 
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-red-400 border border-red-400/20 hover:border-red-400/40 hover:bg-red-400/10 transition cursor-pointer disabled:cursor-not-allowed"
-          >
-            <LuTrash />
-            Delete
-          </button>
+          {post?.id && <DeleteButton postId={post?.id} />}
         </div>
       )}
 
